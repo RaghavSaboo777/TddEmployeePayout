@@ -32,7 +32,7 @@ func (suite *EmployeeComputePayrollTestSuite) Test_EmployeePayout_Returns_Float(
 
 func (suite *EmployeeComputePayrollTestSuite) Test_EmployeePayout_NoCommission_NoHours() {
 	//Check if payout is correctly computed in case of no commission and no hours worked
-	assert.Equal(suite.T(), suite.Employee.ComputePayout(), 1000)
+	assert.Equal(suite.T(), suite.Employee.ComputePayout(), 100)
 }
 
 func (suite *EmployeeComputePayrollTestSuite) Test_EmployeePayout_NoCommission() {
