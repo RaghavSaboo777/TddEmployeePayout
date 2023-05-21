@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/mcuadros/go-defaults"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 	"reflect"
@@ -9,11 +10,12 @@ import (
 
 type EmployeeComputePayrollTestSuite struct {
 	suite.Suite
-	Employee Employee
+	Employee *Employee
 }
 
 func (suite *EmployeeComputePayrollTestSuite) SetupTest() {
-	suite.Employee = Employee{Name: "Employee Name", Id: 1}
+	suite.Employee = new(Employee)
+	defaults.SetDefaults(suite.Employee)
 }
 
 func TestEmployeePayout(t *testing.T) {
@@ -26,24 +28,25 @@ func (suite *EmployeeComputePayrollTestSuite) Test_EmployeePayout_Returns_Float(
 }
 
 func (suite *EmployeeComputePayrollTestSuite) Test_EmployeePayout_NoCommission_NoHours() {
-	assert.Equal(suite.T(), suite.Employee.ComputePayout(), 100)
+	assert.Equal(suite.T(), suite.Employee.ComputePayout(), float32(100))
 }
 
 func (suite *EmployeeComputePayrollTestSuite) Test_EmployeePayout_NoCommission() {
 	suite.Employee.HoursWorked = 10
-	assert.Equal(suite.T(), suite.Employee.ComputePayout(), 200)
+	assert.Equal(suite.T(), suite.Employee.ComputePayout(), float32(200))
 }
 
 func (suite *EmployeeComputePayrollTestSuite) Test_EmployeePayout_WithCommission() {
 	suite.Employee.HoursWorked = 10
 	suite.Employee.HasCommision = true
 	suite.Employee.Commision = 10
-	assert.Equal(suite.T(), suite.Employee.ComputePayout(), 300)
+	suite.Employee.NoOfProjects = 10
+	assert.Equal(suite.T(), suite.Employee.ComputePayout(), float32(300))
 }
 
 func (suite *EmployeeComputePayrollTestSuite) Test_EmployeePayout_Commission_Disabled() {
 	suite.Employee.HoursWorked = 10
 	suite.Employee.HasCommision = false
 	suite.Employee.Commision = 10
-	assert.Equal(suite.T(), suite.Employee.ComputePayout(), 200)
+	assert.Equal(suite.T(), suite.Employee.ComputePayout(), float32(200))
 }

@@ -7,14 +7,20 @@ type Employee struct {
 	Id            int
 	HourlyPayRate float32 `default:"10"`
 	HoursWorked   int
-	EmployerCost  float32 `default:"100"`
-	HasCommision  bool
-	Commision     float32 `default:"100"`
-	NoOfProjects  int
+	//EmployerCost  float32 `default:"100"`
+	EmployerOfficeCost  float32 `default:"60"`
+	EmployerSupportCost float32 `default:"40"`
+	HasCommision        bool
+	Commision           float32 `default:"100"`
+	NoOfProjects        int
 }
 
-func (Employee) ComputePayout() (payout float32) {
-	payout = Employee
+func (emp Employee) ComputePayout() (payout float32) {
+	payout = (emp.HourlyPayRate * float32(emp.HoursWorked)) + emp.EmployerOfficeCost + emp.EmployerSupportCost
+	if emp.HasCommision {
+		payout += emp.Commision * float32(emp.NoOfProjects)
+	}
+	return
 }
 
 func main() {
